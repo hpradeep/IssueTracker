@@ -1,0 +1,78 @@
+
+<div class="container index">
+<h1>Listing Issues</h1>
+<table class="table table-inverse">
+<thead> 
+<tr>
+	<th>Title</th>
+	<th>Created at</th>
+
+	<th colspan="3"></th>
+	
+</tr>
+</thead>
+<tbody>
+
+<%@issues.each do |issue|%>
+<tr>
+<td><%=issue.title %></td>
+<td><%=time_ago_in_words(issue.created_at)%> ago</td>
+<td><%=link_to 'View Comments',issue_comments_path(issue),class: "btn btn-sm btn-default comment"%></td>
+<td><%=link_to 'Edit',edit_issue_path(issue),class: "btn btn-sm btn-default edit" %></td>
+<td><%=link_to 'Destroy',issue,method: :delete,data: {confirm: 'Are you sure?'},class: "btn btn-sm btn-default delete"%></td>
+</tr>
+<%end%>
+</tbody>
+</table>
+<p><%=link_to "New issue",'#',class: "new_issue btn btn-sm btn-success"%></p>
+
+
+</div>
+
+
+<div class=" container newissue">
+<h1>New Issue</h1>
+<p><%=form_for(@issue) do |f| %></p>
+<p><%= f.text_field :title,placeholder: :title%></p>
+<p><%=link_to"CreateIssue",'#',class: "submit btn btn-sm btn-default"%>
+<%=link_to 'Back','#',class: "btn btn-sm btn-default back"%></p>
+
+<%end%>
+</div>
+<% content_for :javascript do %>
+
+<script>
+	$(document).ready(function(){
+		$(".newissue").hide();
+		$(".new_issue").click(function(){
+
+		$(".index").hide(function(){
+			$(".newissue").show();
+
+
+		});
+		
+		});
+		$(".submit").click(function(){
+			var title = $("#issue_title").val();
+			$.ajax({
+				url: "/issues",
+				type: "POST",
+				data:{issue:{title:title}}
+			}).done(function(response){
+
+			});
+		})
+		$(".back").click(function(){
+		
+		$(".newissue").hide(function(){
+        $(".index").show();
+        });
+             
+
+		});
+
+	});
+</script>
+<%end%>
+
