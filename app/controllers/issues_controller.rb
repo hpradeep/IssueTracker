@@ -3,18 +3,24 @@ class IssuesController < ApplicationController
   def index
   	@issues = Issue.all
   	@issue = Issue.new
+  	@comments = Comment.all
   end
 
   def new
   	@issue = Issue.new
+  	@comment = Comment.new
   end
   def create
+  	
   	@issue = Issue.create(issue_params)
+  	render :json => @issue
   end
   def edit
   end
   def destroy
-  	redirect_to "/issues"
+  	if @issue.destroy
+  	redirect_to issues_path
+  end
   end
 
 
@@ -23,6 +29,6 @@ class IssuesController < ApplicationController
   	@issue=Issue.find(params[:id])
   end
   def issue_params
-  	params.require(:issue).permit(:title)
+  	params.require(:issue).permit(:title,:description)
   end
 end
