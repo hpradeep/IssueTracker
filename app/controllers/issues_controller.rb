@@ -1,6 +1,9 @@
 class IssuesController < ApplicationController
+	before_action :authenticate_user!
 	before_action :set_issues,only: [:edit,:destroy]
   def index
+  
+    @user = User.find_by(user_name:"hpradeep")
   	@issues = Issue.all
   	@issue = Issue.new
   	@comments = Comment.all

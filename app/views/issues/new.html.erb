@@ -1,2 +1,115 @@
 <h1>Issues#new</h1>
 <p>Find me in app/views/issues/new.html.erb</p>
+
+            
+            $(".viewcomment").click(function(){
+            	var issueid = $(this).data("id");
+            	$("#hidden-issue-id").val(issueid);
+
+            	var  issuetitle = $(this).data("title"); 
+            	$.ajax({
+            		url: "/issues/"+issueid+"/comments",
+            		type: "GET",
+            	    }).done(function(response){
+            	    	  var html = "";
+            	     	if (response.length > 0){
+            	     		for (i in response){
+            	     		console.log(response);
+
+	            	     	 html +="<tr><td>"+response[i].comment+"</td>";
+	            	     	 html += "<td>"+response[i].created_at+"</td>";
+	            	     	 html += "<td><a class='btn btn-sm btn-default commentedit' href='#'>Edit</a></td>";
+	            	     	 html += "<td><a class='btn btn-sm btn-default commentdelete' href='#' data-confirm='Are You sure'>Destroy</td></tr>";
+	            	     	}
+
+	            		    $(".index").hide(function(){
+	            		    $("#comments").show();
+	            		    $("#title").html("comments for issue:#"+issuetitle);
+	            		    $("#nocomments").html("");
+	            			$("#issuecomment").append(html);
+	            			});	
+            	     	}
+            	     	else{
+                            
+                        $(".index").hide();
+            		    $("#comments").show();
+            		    $("#title").html("comments for issue:#"+issuetitle);
+            		    $("#nocomments").html("No comments yet");
+            		    }
+            	     	
+                   });
+            });
+                $(".createcomment").click(function(){
+                  	var comment = $("#commn").val();
+                  	var hidissuid = $("#hidden-issue-id").val();
+                  	if (comment != ''){
+                       $.ajax({
+                       	url: "/issues/"+hidissuid+"/comments",
+                       	type:"POST",
+                       	data:{'comment':{'comment': comment}}
+                       }).done(function(response){
+                         var html ="<tr><td>"+response.comment+"</td>";
+                          html  +="<td>"+response.created_at+"</td>";
+                          html += "<td><a class='btn btn-sm btn-default commentedit' href='#'>Edit</a></td>";
+	            	     	 html += "<td><a class='btn btn-sm btn-default commentdelete' href='#' data-confirm='Are You sure'>Destroy</td></tr>";
+	            	     	 $("#issuecomment").append(html);
+	            	     	 $("#comments").show();
+	            	     	 $("#nocomments").html("");
+	            	     	 $("#commn").val("");
+                            });
+                       
+                  	}
+                  	else{
+                  		alert("enter your comments");
+                  	}
+                  });
+              
+              
+});
+</script>
+<%end%>
+-->
+<!--
+<%=link_to 'View Comments','#',class: "btn btn-sm btn-default viewcomment",data: {id: issue.id,title: issue.title}%></td>
+<%=link_to 'Edit','#',class: "btn btn-sm btn-default edit",data: {id: issue.id,title: issue.title,description: issue.description} %></td>
+<%=link_to 'Destroy',issue,method: :delete,data: {confirm: 'Are you sure?'},class: "btn btn-sm btn-default delete"%></td>
+</tr>
+<%end%>
+</tbody>
+</table>
+
+-->
+    
+
+
+
+
+
+
+<!--
+</div>
+<div class ="container" id = "comments">
+<h1 id="title">comments for issue</h1>
+<table class="table table-inverse">
+	<thead>
+		<tr>
+		<th>Comments</th>
+		<th>Created at</th>
+		<th colspan="3"></th>
+		</tr>
+	</thead>
+	<tbody id="issuecomment">
+	</tbody>
+	<h3 id="nocomments"></h3>
+</table>
+<input type="hidden" id="hidden-issue-id"><br>
+<form>
+<h6>Post your comment</h6>
+<p><textarea class="form-control" id="commn" placeholder="leave your comment here"></textarea> </p> 
+<p><a class="btn btn-sm btn-default createcomment" href="#">Post</a>
+<a class="btn btn-sm btn-default b2i" href="#">Cancel</a></p>
+</form>
+</div>
+
+
+-->

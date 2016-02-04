@@ -1,89 +1,56 @@
+<div id="fp">
+	<h3><%=@issues.count%> Issues</h3>
 
-<div class="container index">
-<h1> Issues</h1>
-<table class="table table-inverse">
-<thead> 
-<tr>
-	<th>Title</th>
-	<th>Description</th>
-	<th>Created at</th>
-
-	<th colspan="3"></th>
-	
-</tr>
-</thead>
-<tbody id="tbody">
-
-<%@issues.each do |issue|%>
-<tr>
-<td><%=issue.title %></td>
-<td><%=issue.description %></td>
-<td><%=time_ago_in_words(issue.created_at)%> ago</td>
-<td><%=link_to 'View Comments','#',class: "btn btn-sm btn-default viewcomment",data: {id: issue.id,title: issue.title}%></td>
-<td><%=link_to 'Edit','#',class: "btn btn-sm btn-default edit",data: {id: issue.id,title: issue.title,description: issue.description} %></td>
-<td><%=link_to 'Destroy',issue,method: :delete,data: {confirm: 'Are you sure?'},class: "btn btn-sm btn-default delete"%></td>
-</tr>
-<%end%>
-</tbody>
-</table>
-<p><%=link_to "New issue",'#',class: "new_issue btn btn-sm btn-success"%></p>
-
-
+	<div class="list-group fpapp" >
+        <%@issues.each do |issue|%>
+        
+        <a href='#'class="list-group-item fpc" data-id = "<%=issue.id%>" data-title ="<%=issue.title%>" ><dt><%=issue.title %></dt>
+		<p >#<%=issue.id%>
+		opened <%=time_ago_in_words(issue.created_at)%> ago by <%=@user.user_name%></p></a>
+		<%end%>
+    </div>
+	<p><%=link_to "New issue",'#',class: "new_issue btn btn-sm btn-success"%></p>
 </div>
 
 
 <div class="container newissue">
-<h1>New Issue</h1>
-<p><%=form_for(@issue) do |f| %></p>
-<p><%= f.text_field :title,placeholder: :title,class: "form-control"%></p>
-<p><%= f.text_area :description,placeholder: :description,class: "form-control"%></p>
-<p><%=link_to"CreateIssue",'#',class: "submit btn btn-sm btn-default"%>
-<%=link_to 'Back','#',class: "btn btn-sm btn-default back"%></p>
+	<h1>New Issue</h1>
+	<p><%=form_for(@issue) do |f| %></p>
+	<p><%= f.text_field :title,placeholder: :title,class: "form-control"%></p>
+	<p><%= f.text_area :description,placeholder: :description,class: "form-control"%></p>
+	<p><%=link_to"CreateIssue",'#',class: "submit btn btn-sm btn-default"%>
+	<%=link_to 'Back','#',class: "btn btn-sm btn-default back"%></p>
 
-<%end%>
+	<%end%>
 </div>
-<div class ="container" id = "comments">
-<h1 id="title">comments for issue</h1>
-<table class="table table-inverse">
-	<thead>
-		<tr>
-		<th>Comments</th>
-		<th>Created at</th>
-		<th colspan="3"></th>
-		</tr>
-	</thead>
-	<tbody id="issuecomment">
-	</tbody>
-	<h3 id="nocomments"></h3>
-</table>
-<input type="hidden" id="hidden-issue-id"><br>
-<form>
-<h6>Post your comment</h6>
-<p><textarea class="form-control" id="commn" placeholder="leave your comment here"></textarea> </p> 
-<p><a class="btn btn-sm btn-default createcomment" href="#">Post</a>
-<a class="btn btn-sm btn-default b2i" href="#">Cancel</a></p>
-</form>
+<div class="container page-header fcp1">
+<div class="oldcomments">
+<h1 id="head1">something</h1>
 </div>
-
-
-
+<div class="commentscont">
+<inpu id="hiddenfield" type="hidden">
+<textarea class="form-control commfield" placeholder="Leave a comment"></textarea><br />
+<p><button class="createcomment btn btn-sm btn-success">Comment</button></p>
+</div>
+</div>
 
 <% content_for :javascript do %>
 
 <script>
 	$(document).ready(function(){
 		$(".newissue").hide();
-		$("#comments").hide();
+		$(".fcp1").hide();
+		
 		
 		$(".new_issue").on("click",function(){
-       		$(".index").hide();
+       		$("#fp").hide();
 			$(".newissue").show();
 			
 			
        	});
        	$(".back").click(function(){
        		$(".newissue").hide(function(){
-       		 $(".index").show();	
+       		 $("#fp").show();	
        		});
 		});
 		$(".submit").click(function(){
@@ -96,14 +63,12 @@
 				data:{'issue': {'title': title,'description': description}}
 			}).done(function(response){
 				
-              var html ="<tr><td>"+response.title+"</td>";
-                  html += "<td>"+response.description+"</td>";
-                  html +="<td>"+response.created_at+"</td>";
-                  html +="<td><a class='btn btn-sm btn-default comment' href='/issues/"+response.id+"/comments'>View Comments</a></td>";
-                  html +="<td><a class='btn btn-sm btn-default edit' href='/issues/"+response.id+"/edit'>Edit</a></td>";
-                  html +="<td><a class='btn btn-sm btn-default delete' href='/issues/"+response.id+" data-method='delete' rel='nofollow' data-confirm='Are you sure?'>Destroy</a></td>";
-                  $("#tbody").append(html);
-                  $(".index").show();
+              var html ="<a href='#' class='list-group-item'><b>"+response.title+"</b><br>";
+                  html += "<p>#"+response.id+"opened"+response.created_at+"ago</p></a>";
+                 
+                  
+                  $(".fpapp").append(html);
+                  $("#fp").show();
                   $(".newissue").hide();
                   $("#issue_title").val("");
 			      $("#issue_description").val("");
@@ -116,71 +81,63 @@
 			    }
 			
         });
+        $(".fpc").click(function(){
+          var issueid = $(this).data("id");
+          $("#hiddenfield").val(issueid);
+          var issuetitle = $(this).data("title");
+          var idtitle ="<h4>#"+issueid+ "<bold>"+issuetitle+"</bold></h4>";
+          console.log(issueid); 
+          $.ajax({
+          	url: "/issues/"+issueid+"/comments",
+          	type: "GET"
+          }).done(function(response){
+          	var html ="";
+           if (response.length > 0){
             
-            $(".viewcomment").click(function(){
-            	var issueid = $(this).data("id");
-            	$("#hidden-issue-id").val(issueid);
+           	 for(i in response){
+           	 	
+           	 html +="</h1><div class='panel panel-default'><div class='panel-heading'><h3 class='panel-title'>commented on"+response[i].created_at+" ago</h3></div><div class='panel-body'>"+response[i].comment+"</div></div>";
+           }
+           $("#fp").hide();
+           $(".fcp1").show();
+           $("#head1").html(idtitle);
+           
+           $(".oldcomments").append(html);
 
-            	var  issuetitle = $(this).data("title"); 
-            	$.ajax({
-            		url: "/issues/"+issueid+"/comments",
-            		type: "GET",
-            	    }).done(function(response){
-            	    	  var html = "";
-            	     	if (response.length > 0){
-            	     		for (i in response){
-            	     		console.log(response);
+          }
+          else{
+          	 
+          	 html +="<p>no comments yet</p>";
+          	 $("#fp").hide();
+             $(".fcp1").show();
+             $("#head1").html(idtitle);
+             
+             $(".oldcomments").append(html);
+          }
+          });
+          
+        });
+            $(".createcomment").click(function(){
+             var issuid = $("#hiddenfield").val();
+             var comment = $(".commfield").val();
+             if (comment != ""){
+               $.ajax({
+               	url: "/issues/"+issuid+"/comments",
+               	type: "POST",
+               	data:{'comment': {'comment': comment}}
 
-	            	     	 html +="<tr><td>"+response[i].comment+"</td>";
-	            	     	 html += "<td>"+response[i].created_at+"</td>";
-	            	     	 html += "<td><a class='btn btn-sm btn-default commentedit' href='#'>Edit</a></td>";
-	            	     	 html += "<td><a class='btn btn-sm btn-default commentdelete' href='#' data-confirm='Are You sure'>Destroy</td></tr>";
-	            	     	}
+               }).done(function(response){
+                   var html ="</h1><div class='panel panel-default'><div class='panel-heading'><h3 class='panel-title'>commented on"+response.created_at+" ago</h3></div><div class='panel-body'>"+response.comment+"</div></div>";
+                    $(".oldcomments").append(html);
+                    $(".commfield").val("");
 
-	            		    $(".index").hide(function(){
-	            		    $("#comments").show();
-	            		    $("#title").html("comments for issue:#"+issuetitle);
-	            		    $("#nocomments").html("");
-	            			$("#issuecomment").append(html);
-	            			});	
-            	     	}
-            	     	else{
-                            
-                        $(".index").hide();
-            		    $("#comments").show();
-            		    $("#title").html("comments for issue:#"+issuetitle);
-            		    $("#nocomments").html("No comments yet");
-            		    }
-            	     	
-                   });
+               });
+             }
+             else{
+             	alert("leave your comment");
+             }
             });
-                $(".createcomment").click(function(){
-                  	var comment = $("#commn").val();
-                  	var hidissuid = $("#hidden-issue-id").val();
-                  	if (comment != ''){
-                       $.ajax({
-                       	url: "/issues/"+hidissuid+"/comments",
-                       	type:"POST",
-                       	data:{'comment':{'comment': comment}}
-                       }).done(function(response){
-                         var html ="<tr><td>"+response.comment+"</td>";
-                          html  +="<td>"+response.created_at+"</td>";
-                          html += "<td><a class='btn btn-sm btn-default commentedit' href='#'>Edit</a></td>";
-	            	     	 html += "<td><a class='btn btn-sm btn-default commentdelete' href='#' data-confirm='Are You sure'>Destroy</td></tr>";
-	            	     	 $("#issuecomment").append(html);
-	            	     	 $("#comments").show();
-	            	     	 $("#nocomments").html("");
-	            	     	 $("#commn").val("");
-                            });
-                       
-                  	}
-                  	else{
-                  		alert("enter your comments");
-                  	}
-                  });
-              
-              
-});
-</script>
-<%end%>
-
+           
+       });
+</script>	
+<%end%>	
