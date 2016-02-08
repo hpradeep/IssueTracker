@@ -11,23 +11,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160204111915) do
+ActiveRecord::Schema.define(version: 20160205100320) do
+
+  create_table "attachments", force: :cascade do |t|
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size"
+    t.datetime "attachment_updated_at"
+    t.integer  "attachable_id"
+    t.string   "attachable_type"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "attachments", ["attachable_type", "attachable_id"], name: "index_attachments_on_attachable_type_and_attachable_id"
 
   create_table "comments", force: :cascade do |t|
     t.string   "comment"
     t.integer  "issue_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "user_id"
   end
 
   add_index "comments", ["issue_id"], name: "index_comments_on_issue_id"
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id"
 
   create_table "issues", force: :cascade do |t|
     t.string   "title"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.string   "description"
+    t.integer  "user_id"
   end
+
+  add_index "issues", ["user_id"], name: "index_issues_on_user_id"
 
   create_table "projects", force: :cascade do |t|
     t.string   "name"
@@ -50,6 +68,10 @@ ActiveRecord::Schema.define(version: 20160204111915) do
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.string   "user_name"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

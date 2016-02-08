@@ -1,10 +1,11 @@
 class IssuesController < ApplicationController
 	before_action :authenticate_user!
 	before_action :set_issues,only: [:edit,:destroy]
+	before_action :set_user,only: [:create]
   def index
   
-    @user = User.find_by(user_name:"hpradeep")
-  	@issues = Issue.all
+    @user = User.all
+  	@issues = Issue.all.order(created_at: :desc)
   	@issue = Issue.new
   	@comments = Comment.all
   end
@@ -31,7 +32,10 @@ class IssuesController < ApplicationController
   def set_issues
   	@issue=Issue.find(params[:id])
   end
+  def set_user
+  	params[:issue][:user_id] = current_user.id
+  end
   def issue_params
-  	params.require(:issue).permit(:title,:description)
+  	params.require(:issue).permit(:title,:description,:user_id)
   end
 end

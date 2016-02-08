@@ -6,7 +6,7 @@
         
         <a href='#'class="list-group-item fpc" data-id = "<%=issue.id%>" data-title ="<%=issue.title%>" ><dt><%=issue.title %></dt>
 		<p >#<%=issue.id%>
-		opened <%=time_ago_in_words(issue.created_at)%> ago by <%=@user.user_name%></p></a>
+		opened <%=time_ago_in_words(issue.created_at)%> ago by <%=issue.user.user_name%></p></a>
 		<%end%>
     </div>
 	<p><%=link_to "New issue",'#',class: "new_issue btn btn-sm btn-success"%></p>
@@ -30,7 +30,7 @@
 <div class="commentscont">
 <inpu id="hiddenfield" type="hidden">
 <textarea class="form-control commfield" placeholder="Leave a comment"></textarea><br />
-<p><button class="createcomment btn btn-sm btn-success">Comment</button></p>
+<p><button class="createcomment btn btn-sm btn-success">Comment</button> <button class="backtoindex btn btn-sm btn-default">Back</button></p>
 </div>
 </div>
 
@@ -85,7 +85,7 @@
           var issueid = $(this).data("id");
           $("#hiddenfield").val(issueid);
           var issuetitle = $(this).data("title");
-          var idtitle ="<h4>#"+issueid+ "<bold>"+issuetitle+"</bold></h4>";
+          var idtitle ="<h4>#"+issueid+" <bold>"+issuetitle+"</bold></h4>";
           console.log(issueid); 
           $.ajax({
           	url: "/issues/"+issueid+"/comments",
@@ -96,7 +96,7 @@
             
            	 for(i in response){
            	 	
-           	 html +="</h1><div class='panel panel-default'><div class='panel-heading'><h3 class='panel-title'>commented on"+response[i].created_at+" ago</h3></div><div class='panel-body'>"+response[i].comment+"</div></div>";
+           	 html +="</h1><div class='panel panel-default'><div class='panel-heading'><h3 class='panel-title'>"+response[i].user.user_name+" commented on"+response[i].created_at+" ago</h3></div><div class='panel-body'>"+response[i].comment+"</div></div>";
            }
            $("#fp").hide();
            $(".fcp1").show();
@@ -107,7 +107,7 @@
           }
           else{
           	 
-          	 html +="<p>no comments yet</p>";
+          	 html +="<p class='p'>no comments yet</p>";
           	 $("#fp").hide();
              $(".fcp1").show();
              $("#head1").html(idtitle);
@@ -127,9 +127,11 @@
                	data:{'comment': {'comment': comment}}
 
                }).done(function(response){
-                   var html ="</h1><div class='panel panel-default'><div class='panel-heading'><h3 class='panel-title'>commented on"+response.created_at+" ago</h3></div><div class='panel-body'>"+response.comment+"</div></div>";
+               	   console.log(response.user);
+                   var html ="</h1><div class='panel panel-default'><div class='panel-heading'><h3 class='panel-title'>"+response.user.user_name+" commented on"+response.created_at+" ago</h3></div><div class='panel-body'>"+response.comment+"</div></div>";
                     $(".oldcomments").append(html);
                     $(".commfield").val("");
+                    $(".p").html("");
 
                });
              }

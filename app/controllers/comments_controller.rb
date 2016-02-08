@@ -1,8 +1,9 @@
 class CommentsController < ApplicationController
 	before_action :find_issue
+  before_action :set_comment, only: [:create]
   def index
-  	@comments = @issue.comments
-  	render :json => @comments
+  	@comments = @issue.comments.order(created_at: :desc)
+  	render :json => @comments.to_json(:include => [:user])
 
   end
 
@@ -12,7 +13,7 @@ class CommentsController < ApplicationController
   end
   def create
    @comment = @issue.comments.create(comment_params)
-   render :json => @comment
+   render :json => @comment.to_json(:include => [:user])
   end
   def edit
   end
@@ -22,7 +23,10 @@ class CommentsController < ApplicationController
   def find_issue
   	@issue = Issue.find(params[:issue_id])
   end
+  def set_comment
+    params[:comment][:user_id] = current_user.id
+  end
   def comment_params
-  	params.require(:comment).permit(:comment)
+  	params.require(:comment).permit(:comment,:user_id)
   end
 end
