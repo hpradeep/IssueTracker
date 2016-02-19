@@ -7,7 +7,10 @@
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true %>
   </div>
-  <p>Avatar:<%=image_tag @user.avatar.url(:thumb)%></p>
+  <div class="field">
+    <%=f.label :avatar %><br >
+    <%=f.file_field :avatar %>
+    </div>
  
 
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -38,4 +41,4 @@
 
 <p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
 
-<%= link_to "Back", :back %>
+<%= link_to "Back", issues_path %>

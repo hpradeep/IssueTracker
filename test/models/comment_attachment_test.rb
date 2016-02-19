@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AttachmentTest < ActiveSupport::TestCase
+class CommentAttachmentTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

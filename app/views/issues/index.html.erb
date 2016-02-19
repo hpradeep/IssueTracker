@@ -13,10 +13,13 @@
 </div>
 
 
-<div class="container newissue">
+<div class="container row newissue">
 	<h1>New Issue</h1>
+  
+  <p><%=image_tag (current_user.avatar.url(:thumb)),class: "img-responsive thumbnail img-rounded"%></p>
 	<p><%=form_for(@issue) do |f| %></p>
 	<p><%= f.text_field :title,placeholder: :title,class: "form-control"%></p>
+  
 	<p><%= f.text_area :description,placeholder: :description,class: "form-control"%></p>
 	<p><%=link_to"CreateIssue",'#',class: "submit btn btn-sm btn-default"%>
 	<%=link_to 'Back','#',class: "btn btn-sm btn-default back"%></p>
@@ -26,10 +29,12 @@
 <div class="container page-header fcp1">
 <div class="oldcomments">
 <h1 id="head1">something</h1>
+
 </div>
 <div class="commentscont">
-<inpu id="hiddenfield" type="hidden">
-<textarea class="form-control commfield" placeholder="Leave a comment"></textarea><br />
+<input id="hiddenfield" type="hidden">
+<div class="formdiv">
+</div>
 <p><button class="createcomment btn btn-sm btn-success">Comment</button> <button class="backtoindex btn btn-sm btn-default">Back</button></p>
 </div>
 </div>
@@ -85,34 +90,55 @@
           var issueid = $(this).data("id");
           $("#hiddenfield").val(issueid);
           var issuetitle = $(this).data("title");
-          var idtitle ="<h4>#"+issueid+" <bold>"+issuetitle+"</bold></h4>";
+          var idtitle ="<h4>#"+issueid+" <bold>"+issuetitle+"</bold></h4>"
+          console.log();    
           console.log(issueid); 
           $.ajax({
           	url: "/issues/"+issueid+"/comments",
           	type: "GET"
           }).done(function(response){
+            
           	var html ="";
            if (response.length > 0){
             
            	 for(i in response){
-           	 	
+           	 html +="<img src="+response[i].user.avatar_url+"alt='user_image'>";
            	 html +="</h1><div class='panel panel-default'><div class='panel-heading'><h3 class='panel-title'>"+response[i].user.user_name+" commented on"+response[i].created_at+" ago</h3></div><div class='panel-body'>"+response[i].comment+"</div></div>";
-           }
+              }
+            $.ajax({
+            url :"/issues/"+issueid+"/comments/new",
+            type :"GET"
+           }).done(function(response){
+
+
            $("#fp").hide();
            $(".fcp1").show();
            $("#head1").html(idtitle);
            
            $(".oldcomments").append(html);
-
-          }
+           
+           $(".formdiv").append(response);
+          });
+          
+            }
+          
           else{
+            $.ajax({
+            url :"/issues/"+issueid+"/comments/new",
+            type :"GET"
+           }).done(function(response){
+
+
+           $("#fp").hide();
+           $(".fcp1").show();
+           $("#head1").html(idtitle);
+           
+           $(".oldcomments").append(html);
+           
+           $(".formdiv").append(response);
+          });
           	 
-          	 html +="<p class='p'>no comments yet</p>";
-          	 $("#fp").hide();
-             $(".fcp1").show();
-             $("#head1").html(idtitle);
-             
-             $(".oldcomments").append(html);
+          	              
           }
           });
           
@@ -120,11 +146,13 @@
             $(".createcomment").click(function(){
              var issuid = $("#hiddenfield").val();
              var comment = $(".commfield").val();
+             var attachment = $(".attach").val();
              if (comment != ""){
                $.ajax({
                	url: "/issues/"+issuid+"/comments",
                	type: "POST",
-               	data:{'comment': {'comment': comment}}
+               	data: {'comment': {'comment': comment,'comment_attachments_attributes':{'attachment' : attachment}}}
+
 
                }).done(function(response){
                	   console.log(response.user);

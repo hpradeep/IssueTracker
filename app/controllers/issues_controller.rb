@@ -4,7 +4,7 @@ class IssuesController < ApplicationController
 	before_action :set_user,only: [:create]
   def index
   
-    @user = User.all
+    
   	@issues = Issue.all.order(created_at: :desc)
   	@issue = Issue.new
   	@comments = Comment.all

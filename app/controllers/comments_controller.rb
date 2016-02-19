@@ -3,12 +3,14 @@ class CommentsController < ApplicationController
   before_action :set_comment, only: [:create]
   def index
   	@comments = @issue.comments.order(created_at: :desc)
-  	render :json => @comments.to_json(:include => [:user])
+  	render :json => @comments.to_json(:include => [:user => {:methods => [:avatar_url]}])
 
   end
 
   def new
   	@comment = @issue.comments.build
+   @comment_attachment= @comment.comment_attachments.build
+    render partial: "/comments/comment"
 
   end
   def create
@@ -27,6 +29,6 @@ class CommentsController < ApplicationController
     params[:comment][:user_id] = current_user.id
   end
   def comment_params
-  	params.require(:comment).permit(:comment,:user_id)
+  	params.require(:comment).permit(:comment,:user_id,comment_attachments_attributes: [:attachment])
   end
 end

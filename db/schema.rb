@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160205100320) do
+ActiveRecord::Schema.define(version: 20160217110023) do
 
   create_table "attachments", force: :cascade do |t|
     t.string   "attachment_file_name"
@@ -26,6 +26,16 @@ ActiveRecord::Schema.define(version: 20160205100320) do
 
   add_index "attachments", ["attachable_type", "attachable_id"], name: "index_attachments_on_attachable_type_and_attachable_id"
 
+  create_table "comment_attachments", force: :cascade do |t|
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size"
+    t.datetime "attachment_updated_at"
+    t.integer  "comment_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
   create_table "comments", force: :cascade do |t|
     t.string   "comment"
     t.integer  "issue_id"
@@ -36,6 +46,16 @@ ActiveRecord::Schema.define(version: 20160205100320) do
 
   add_index "comments", ["issue_id"], name: "index_comments_on_issue_id"
   add_index "comments", ["user_id"], name: "index_comments_on_user_id"
+
+  create_table "issue_attachments", force: :cascade do |t|
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size"
+    t.datetime "attachment_updated_at"
+    t.integer  "issue_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
 
   create_table "issues", force: :cascade do |t|
     t.string   "title"
