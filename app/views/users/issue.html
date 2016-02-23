@@ -1,4 +1,6 @@
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+
 <nav class="navbar navbar-default">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -16,7 +18,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       
       <form class="navbar-form navbar-left" role="search">
-        <div class="form-group col-xs-4">
+        <div class="form-group col-lg-4">
 
          <input type="text" class="form-control input-sm" placeholder="Search">
         </div>
@@ -33,9 +35,9 @@
       </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-bell" aria-hidden="true"></span></a></li>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span><span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="#">Action</a></li>
             <li><a href="#">Another action</a></li>
@@ -50,33 +52,126 @@
   </nav>
 
 
-<div class="container">
+
+  <div class="row-fluid">
+    <div class="container">
   
-    <span class="author">
-    <a href="#"><strong>hpradeep</strong></a>
-    </span>
-    <span class="path-divider">/</span>
-    <strong><a href="#">Hash14Task</a></strong><br />
-     <div class="dropdown">
-  <button class="btn btn-default pull-right dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-  <span class="caret"></span></button>
-  <ul class="dropdown-menu">
-    <li><a href="#">HTML</a></li>
-    <li><a href="#">CSS</a></li>
-    <li><a href="#">JavaScript</a></li>
-  </ul>
+      <span class="author">
+      <a href="#"><strong>hpradeep</strong></a>
+      </span>
+      <span class="path-divider">/</span>
+      <strong><a href="#">Hash14Task</a></strong><br />
+    
+     <div class=" pull-right col-xs-3 dropdown">
+        <button class=" btn-group btn btn-default btn-xs dropdown-toggle" type="button" data- 
+        toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>Dropdown 
+        <span class="caret"></span>
+
+        </button>
+        <ul class="dropdown-menu">
+         <li><a href="#">HTML</a></li>
+         <li><a href="#">CSS</a></li>
+         <li><a href="#">JavaScript</a></li>
+        </ul>
+      </div>  
+      <div class="col-xs-3 pull-right btn-group" role="group">
+    <button type="button" class="btn btn-default btn-xs" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+    Star</button>
+    <button type="button" class="btn-xs btn btn-default">1</button>
+    </div>
+    
+  </div>
 </div>
+    <div class="container">
      <ul class="nav nav-tabs">
     <li role="presentation"><a href="#">code</a></li>
-    <li role="presentation" class="active"><a href="#">Issues <span class="badge">0</span></a></li>
+    <li role="presentation" class="active">
+    
+    <a href="#"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>Issues <span class="badge">0</span></a></li>
     <li role="presentation"><a href="#">Pull requests <span class="badge">2</span></a></li>
     <li role="presentation"><a href="#">Wiki</a></li>
     <li role="presentation"><a href="#">Pulse</a></li>
-    <li role="presentation"><a href="#">Graphs</a></li>
-    <li role="presentation"><a href="#">Settings</a></li>
+    <li role="presentation"><a href="#"><span class="glyphicon glyphicon-signal" aria-hidden="true"></span>Graphs</a></li>
+    <li role="presentation"><a href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Settings</a></li>
     </ul>
-</div>
+    </div><br />
+    <div class="container">
+    <div class="container row">
+  <div class="col-lg-4">
+    <div class="input-group">
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filters <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a href="#">Action</a></li>
+          <li><a href="#">Another action</a></li>
+          <li><a href="#">Something else here</a></li>
+          <li role="separator" class="divider"></li>
+          <li><a href="#">Separated link</a></li>
+        </ul>
+      </div><!-- /btn-group -->
+      <input type="text" class="form-control" aria-label="...">
+    </div><!-- /input-group -->
+  </div>
+  <div class="btn-group" role="group" aria-label="...">
 
+
+  <button type="button" class="btn btn-default">
+    Labels</button>
+  <button type="button" class="btn btn-default">Milestones</button>
+</div>
+   <button type="button" class="pull-right btn btn-success">New Issue</button>
+</div><br ><br /><!-- /.col-lg-6 -->
+
+ 
+<div class="container list-group">
+  
+  <a href="#" class="list-group-item">
+  <div class="container checkbox">
+  <input type="checkbox" value=""><span>
+  <h4 class="list-group-item-heading">First item</h4>
+  <p class="list-group-item-text">first item text</p>
+  </div>
+  </a>
+
+
+  <a href="#" class="list-group-item">
+  <div class="container checkbox">
+  <input type="checkbox" value="">
+  <h4 class="list-group-item-heading">Second item</h4>
+  <p class="list-group-item-text">second item text</p>
+  </div>
+  </a>
+  <a href="#" class="list-group-item">
+  <div class="container checkbox">
+  <input type="checkbox" value="">
+  <h4 class="list-group-item-heading">Second item</h4>
+  <p class="list-group-item-text">second item text</p>
+  </div>
+  </a>
+    <a href="#" class="list-group-item">
+    <div class="container checkbox">
+    <input type="checkbox" value="">
+    <h4 class="list-group-item-heading active">Second item</h4>
+  <p class="list-group-item-text">second item text</p>
+  </div>
+  </a>
+  <a href="#" class="list-group-item">
+  <div class="container checkbox">
+  <input type="checkbox" value="">
+  <h4 class="list-group-item-heading">Second item</h4>
+  <p class="list-group-item-text">second item text</p>
+  </div>
+  </a>
+  <a href="#" class="list-group-item">
+  <div class="container checkbox">
+  <input type="checkbox" value="">
+  <h4 class="list-group-item-heading">Second item</h4>
+  <p class="list-group-item-text">second item text</p>
+  </div>
+  </a>
+
+</div>
+</div>
 
    
 <!-- /.navbar-collapse -->
