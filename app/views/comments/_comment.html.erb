@@ -10,7 +10,7 @@
 <div class="panel-footer">
 <%=f.fields_for :comment_attachments do |ff|%>
 
-<%=ff.file_field :attachment,class: "attach"%>
+<%=ff.file_field :attachment,multiple:true,class: "attach"%>
 <%end%>
 </div>
 <%end%>

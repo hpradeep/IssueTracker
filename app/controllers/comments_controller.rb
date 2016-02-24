@@ -9,18 +9,19 @@ class CommentsController < ApplicationController
 
   def new
   	@comment = @issue.comments.build
-   @comment_attachment= @comment.comment_attachments.build
+    @comment_attachment= @comment.comment_attachments.build
     render partial: "/comments/comment"
 
   end
   def create
    @comment = @issue.comments.create(comment_params)
+   
    render :json => @comment.to_json(:include => [:user])
   end
-  def edit
-  end
-  def destroy
-  end
+   def edit
+   end
+   def destroy
+   end
   private
   def find_issue
   	@issue = Issue.find(params[:issue_id])
